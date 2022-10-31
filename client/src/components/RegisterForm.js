@@ -70,17 +70,13 @@ const RegisterForm = () => {
 
   return (
 
-
-
-
-
     <Paper component="form" autoComplete="off" sx={{ display: 'flex', flexDirection: 'column', p: 2, maxWidth: "600px" }}>
 
       {success ?
-        <>
-          <Typography variant="h4">User Created!</Typography>
-          <Link href='/signIn' underline="none">Sign In</Link>
-        </>
+        <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
+          <Typography sx={{ pt: 2, pb: 4 }} variant="h4">User Created!</Typography>
+          <Link sx={{ fontSize: '20px', pb: 4 }} href='/signIn' underline="none">Sign In</Link>
+        </Box>
 
         : (
           <>
