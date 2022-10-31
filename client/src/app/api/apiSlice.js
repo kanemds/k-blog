@@ -12,3 +12,8 @@ const baseQuery = fetchBaseQuery({
     return headers
   }
 })
+
+// custom query 
+const baseQueryWithReauth = async (args, api, extraOptions) => {
+
+}
