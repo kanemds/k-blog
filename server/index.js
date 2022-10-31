@@ -20,12 +20,6 @@ mongoose
     console.log(error.message)
   })
 
-
-
-app.get('/', (req, res) => {
-  res.send("Hello World")
-})
-
 app.use(express.json())
 app.use('/', routes)
 
