@@ -1,4 +1,6 @@
 const Users = require('../models/user')
+const bcrypt = require('bcrypt')
+require('dotenv').config()
 
 const signup = async (req, res) => {
   try {
