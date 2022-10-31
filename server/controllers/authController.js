@@ -3,7 +3,6 @@ const Users = require('../models/user')
 const signup = async (req, res) => {
   try {
     const newUser = new Users(req.body)
-    console.log(req.body)
     await newUser.save()
     res.status(200).json('User has been created')
   } catch (error) {
