@@ -31,7 +31,6 @@ const logIn = async (req, res, next) => {
       }
     }
 
-    // const user = await Users.findOne({ userName: req.body.userName })
     const isMatch = await bcrypt.compare(req.body.password, user.password)
 
     if (!isMatch) return next(customError(400, "Not authenticated please try again."))
