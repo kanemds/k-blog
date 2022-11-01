@@ -2,9 +2,13 @@ const Users = require('../models/user')
 const bcrypt = require('bcrypt')
 require('dotenv').config()
 
-const signup = async (req, res) => {
+const register = async (req, res) => {
   try {
-    const newUser = new Users(req.body)
+
+    const salt = bcrypt.genSaltSync(10)
+    const hash = bcrypt.hashSync(req.body.password, salt)
+
+    const newUser = new Users({ ...req.body, password: hash })
     await newUser.save()
     res.status(200).json('User has been created')
   } catch (error) {
@@ -12,6 +16,11 @@ const signup = async (req, res) => {
   }
 }
 
+const logIn = async (req, res) => {
+
+}
 
 
-module.exports = { signup }
+
+
+module.exports = { register, logIn }
