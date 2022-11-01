@@ -1,5 +1,6 @@
 const Users = require('../models/user')
 const bcrypt = require('bcrypt')
+const customError = require('../utility/error')
 require('dotenv').config()
 
 const register = async (req, res, next) => {
@@ -16,15 +17,30 @@ const register = async (req, res, next) => {
   }
 }
 
-const logIn = async (req, res) => {
-  try {
-    const logInByUserName = Users.findOne({ userNeme: req.userName })
-    const logInByEmail = Users.findOne({ email: req.email })
-    if (!logInByEmail || !logInByUserName) {
-      return
-    }
-  } catch (error) {
+const logIn = async (req, res, next) => {
 
+  try {
+    let user
+    if (req.body.userName || req.body.email) {
+      if (req.body.userName) {
+        user = await Users.findOne({ userName: req.body.userName })
+      } else if (req.body.email) {
+        user = await Users.findOne({ email: req.body.email })
+      } else {
+        return next(customError(404, "Not authenticated please try again."))
+      }
+    }
+
+    // const user = await Users.findOne({ userName: req.body.userName })
+    const isMatch = await bcrypt.compare(req.body.password, user.password)
+
+    if (!isMatch) return next(customError(400, "Not authenticated please try again."))
+
+    const { password, ...rest } = user._doc
+    console.log(rest)
+    res.status(200).json(rest)
+  } catch (error) {
+    next(error)
   }
 }
 
