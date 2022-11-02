@@ -19,7 +19,7 @@ const register = async (req, res, next) => {
 }
 
 const logIn = async (req, res, next) => {
-
+  if (!req.body.userName && !req.body.email) return next(customError(404, "Not authenticated please try again."))
   try {
     let user
     if (req.body.userName || req.body.email) {
