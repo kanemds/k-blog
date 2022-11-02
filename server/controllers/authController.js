@@ -36,7 +36,7 @@ const logIn = async (req, res, next) => {
 
     if (!isMatch) return next(customError(400, "Not authenticated please try again."))
 
-    const token = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET)
+    const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.ACCESS_TOKEN_SECRET)
 
     const { password, ...rest } = user._doc
 
