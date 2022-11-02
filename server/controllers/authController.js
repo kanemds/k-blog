@@ -1,6 +1,7 @@
 const Users = require('../models/user')
 const bcrypt = require('bcrypt')
 const customError = require('../utility/error')
+const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
 const register = async (req, res, next) => {
@@ -35,9 +36,12 @@ const logIn = async (req, res, next) => {
 
     if (!isMatch) return next(customError(400, "Not authenticated please try again."))
 
+    const token = jwt.sign({ id: user._id }, process.env.ACCESS_TOKEN_SECRET)
+
     const { password, ...rest } = user._doc
     console.log(rest)
-    res.status(200).json(rest)
+
+    res.cookie('access_token', token, { httpOnly: true }).status(200).json(rest)
   } catch (error) {
     next(error)
   }
