@@ -40,17 +40,18 @@ const logIn = async (req, res, next) => {
 
     if (!isMatch) return next(customError(400, "Not authenticated please try again."))
 
-    const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '5s' })
-    const refreshToken = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '10s' })
+    const accessToken = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '20s' })
+    const refreshToken = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '30s' })
 
     const { password, ...rest } = user._doc
 
-    res.cookie('access_token', token, { httpOnly: true }).status(200).json({ rest, data: { token, refreshToken } })
+    res.cookie('access_token', accessToken, { httpOnly: true }).status(200).json({ rest, accessToken, refreshToken })
 
   } catch (error) {
     next(error)
   }
 }
+
 
 
 module.exports = { register, logIn }
