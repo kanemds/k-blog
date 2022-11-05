@@ -1,10 +1,15 @@
 const jwt = require('jsonwebtoken')
+const Users = require('../models/user')
 require('dotenv').config()
 
-const refreshToken = (req, res) => {
+const refreshToken = async (req, res) => {
+
+  const { access_token } = req.cookies
+
+  const user = Users.findById(req.params.id)
 
   // token from axios post 
-  const refreshToken = req.body.token
+  const currentRefreshToken = req.body.token
 
   if (!refreshToken) return res.status(401).json("You are not authenticated!")
 
