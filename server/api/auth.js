@@ -4,7 +4,7 @@ const refreshToken = require('../utility/refreshToken')
 
 router.post('/register', register)
 router.post('/login', logIn)
-router.post('/refresh', refreshToken)
+router.post('/refresh/:id', refreshToken)
 
 
 module.exports = router
