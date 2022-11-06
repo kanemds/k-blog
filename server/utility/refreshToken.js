@@ -3,15 +3,11 @@ const Users = require('../models/user')
 require('dotenv').config()
 
 const refreshToken = async (req, res) => {
+  // check 
+  const cookies = req.cookies
 
-  const { access_token } = req.cookies
+  if (!cookies.jwt) return res.status(401).json("You are not authenticated!")
 
-  const user = Users.findById(req.params.id)
-
-  // token from axios post 
-  const currentRefreshToken = req.body.token
-
-  if (!refreshToken) return res.status(401).json("You are not authenticated!")
 
 
   jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (error, user) => {
