@@ -43,8 +43,8 @@ const refreshToken = async (req, res) => {
 
       if (error || foundUser.id || user.id) return res.status(403).json("You are not authenticated!")
 
-      const newAccessToken = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '20m' })
-      const newRefreshToken = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' })
+      const newAccessToken = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10s' })
+      const newRefreshToken = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '15s' })
 
       foundUser.refreshTokens = [...newRefreshTokenArray, newRefreshToken]
 

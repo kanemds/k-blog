@@ -48,8 +48,8 @@ const logIn = async (req, res, next) => {
 
   if (isMatch) {
 
-    const accessToken = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '20m' })
-    const newRefreshToken = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' })
+    const accessToken = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10s' })
+    const newRefreshToken = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '15s' })
 
     let newRefreshTokenArray = !cookies?.jwt ? user.refreshTokens : user.refreshTokens.filter(token => token !== cookies.jwt)
 
@@ -64,7 +64,7 @@ const logIn = async (req, res, next) => {
         newRefreshToken = []
       }
 
-      res.clearCookie('jwt', { httpOnly: true })
+      res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true })
     }
     user.refreshTokens = [...newRefreshTokenArray, newRefreshToken]
 
@@ -73,7 +73,7 @@ const logIn = async (req, res, next) => {
 
     const { password, ...rest } = user._doc
 
-    res.cookie('jwt', newRefreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 })
+    res.cookie('jwt', newRefreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 })
 
     res.json({ rest, accessToken })
 
