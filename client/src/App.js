@@ -2,7 +2,7 @@
 import RegisterForm from './components/RegisterForm'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import SignInForm from './components/SignInForm'
-import Home from './components/pages/Home'
+import Home from './pages/Home'
 
 function App() {
   return (
