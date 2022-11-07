@@ -5,6 +5,7 @@ const router = require('express').Router()
 const users = require('./users')
 const auth = require('./auth')
 const logout = require('./logout')
+const refreshToken = require('../utility/refreshToken')
 
 
 
@@ -12,5 +13,6 @@ const logout = require('./logout')
 router.use('/users', users)
 router.use('/auth', auth)
 router.use('/logout', logout)
+router.use('/refresh', refreshToken)
 
 module.exports = router
