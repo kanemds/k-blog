@@ -28,12 +28,14 @@ const SignInForm = () => {
     }
   }
 
-  const handleSubmit = (e) => {
+
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
     try {
       const userDate = await login({
-        type? userName: email,
+        userName,
         password
       }).unwrap()
       setUserName('')
@@ -65,11 +67,11 @@ const SignInForm = () => {
       <Typography sx={{ display: 'flex', justifyContent: 'center', pt: 2, pb: 4 }} variant="h4" >Sign in</Typography>
       <Button onClick={handleType}>sign in with {type ? "user name" : "email"}</Button>
       {type ?
-        <TextField sx={{ pb: 2 }} type='text' label="User Name" variant="outlined" onChange={userNameInput} />
+        <TextField sx={{ pb: 2 }} type='text' label="User Name" variant="outlined" value={userName} onChange={userNameInput} />
         :
-        <TextField sx={{ pb: 2 }} type='text' label="Email" variant="outlined" onChange={emailInput} />
+        <TextField sx={{ pb: 2 }} type='text' label="Email" variant="outlined" value={email} onChange={emailInput} />
       }
-      <TextField sx={{ pb: 2 }} type='password' label="Password" variant="outlined" onChange={passwordInput} />
+      <TextField sx={{ pb: 2 }} type='password' label="Password" variant="outlined" value={password} onChange={passwordInput} />
       <Button>Sign in</Button>
       <Button>Back</Button>
     </Paper>
