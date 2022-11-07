@@ -1,9 +1,25 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Paper, Box, Button, TextField, Typography, Link } from '@mui/material'
+import { useDispatch } from 'react-redux'
+import { setCredentials } from '../redux/auth/authSlice'
+import { useLoginMutation } from '../redux/auth/authApiSlice'
 
 const SignInForm = () => {
 
+
   const [type, setType] = useState(false)
+  const userRef = useRef()
+  const errorRef = useRef()
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const [userName, setUserName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [errorMessage, seterrorMessage] = useState('')
+
+  const [login, { isLoading }] = useLoginMutation()
+
 
   const handleType = () => {
     if (!type) {
@@ -11,6 +27,23 @@ const SignInForm = () => {
     }
     if (type) {
       setType(false)
+    }
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    try {
+      const userDate = await login({
+        userName.length === 0 ? email : userName,
+        password
+      }).unwrap()
+      setUserName('')
+      setEmail('')
+      setPassword('')
+      navigate('/home')
+    } catch (error) {
+
     }
   }
 
