@@ -3,25 +3,27 @@ const User = require('../models/user')
 const logout = async (req, res, next) => {
   const cookies = req.cookies
 
-  console.log(cookies.jwt)
+  console.log(cookies)
+
 
   if (!cookies?.jwt) return res.sendStatus(204)
   const refreshToken = cookies.jwt
 
   const user = await User.findOne({ refreshToken }).exec()
 
-  console.log(user)
+
   if (!user) {
-    res.clearCookie('jwt')
-    res.sendStatus(204)
+    res.clearCookie('jwt', { httpOnly: true }).status.json("Not authenticated please try again.")
+
     return next()
   }
 
   user.refreshTokens = user.refreshTokens.filter(token => token !== refreshToken)
+  console.log(user)
   const result = await user.save()
-  console.log(result)
 
-  res.clearCookie('jwt').sendStatus(204).json("User Logout")
+
+  res.clearCookie('jwt', { httpOnly: true }).status(204).json("User Logout")
 
 }
 

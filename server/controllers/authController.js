@@ -35,10 +35,12 @@ const logIn = async (req, res, next) => {
       user = await Users.findOne({ userName: userName }).exec()
     } else if (email) {
       user = await Users.findOne({ email: email }).exec()
-    } else {
-      return next(customError(401, "Not authenticated please try again."))
     }
+  } else {
+    return next(customError(401, "Not authenticated please try again."))
   }
+
+  if (!user) return next(customError(401, "Not authenticated please try again."))
 
   const isMatch = await bcrypt.compare(req.body.password, user.password)
 
@@ -46,8 +48,8 @@ const logIn = async (req, res, next) => {
 
   if (isMatch) {
 
-    const accessToken = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '20s' })
-    const newRefreshToken = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '30s' })
+    const accessToken = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '20m' })
+    const newRefreshToken = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '1d' })
 
     let newRefreshTokenArray = !cookies?.jwt ? user.refreshTokens : user.refreshTokens.filter(token => token !== cookies.jwt)
 
@@ -71,15 +73,13 @@ const logIn = async (req, res, next) => {
 
     const { password, ...rest } = user._doc
 
-    res.cookie('jwt', newRefreshToken)
+    res.cookie('jwt', newRefreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 })
 
     res.json({ rest, accessToken })
 
   } else {
     res.status(401).json('Not authenticated.')
   }
-
-  // res.cookie('jwt', accessToken, { httpOnly: true }).status(200).json({ rest, accessToken, refreshToken })
 
 
 }
