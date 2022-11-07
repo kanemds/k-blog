@@ -5,6 +5,7 @@ require('dotenv').config()
 const refreshToken = async (req, res) => {
   // check 
   const cookies = req.cookies
+  console.log(req.user)
 
   if (!cookies.jwt) return res.status(401).json("You are not authenticated!")
   const tokenFromUser = cookies.jwt
