@@ -1,6 +1,15 @@
 const Users = require('../models/user')
 const customError = require('../utility/error')
 
+const getAllUsers = async (req, res, next) => {
+  try {
+    const users = Users.find()
+    res.status(200).json(users)
+  } catch (error) {
+    next(error)
+  }
+}
+
 const deleteUser = async (req, res, next) => {
   if (req.params.id === req.user.id || req.user.isAdmin) {
     try {
@@ -16,4 +25,4 @@ const deleteUser = async (req, res, next) => {
 }
 
 
-module.exports = { deleteUser }
+module.exports = { deleteUser, getAllUsers }
