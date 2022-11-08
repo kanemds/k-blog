@@ -3,6 +3,7 @@ import { Paper, Box, Button, TextField, Typography, Link } from '@mui/material'
 import { useDispatch } from 'react-redux'
 import { setCredentials } from '../redux/auth/authSlice'
 import { useLoginMutation } from '../redux/auth/authApiSlice'
+import { useNavigate } from 'react-router-dom'
 
 const SignInForm = () => {
 
@@ -34,14 +35,15 @@ const SignInForm = () => {
     e.preventDefault()
 
     try {
-      const userDate = await login({
+      const userData = await login({
         userName,
         password
       }).unwrap()
+      dispatch(setCredentials({ ...userData, userName }))
       setUserName('')
       setEmail('')
       setPassword('')
-      navigate('/home')
+      navigate('/welcome')
     } catch (error) {
       if (!error?.originalStatus) {
         seterrorMessage('No Server Response')
@@ -65,14 +67,14 @@ const SignInForm = () => {
     <Paper component="form" autoComplete="off" sx={{ display: 'flex', flexDirection: 'column', p: 2, maxWidth: "600px" }}>
       <Typography>{errorMessage.length === 0 ? "" : errorMessage}</Typography>
       <Typography sx={{ display: 'flex', justifyContent: 'center', pt: 2, pb: 4 }} variant="h4" >Sign in</Typography>
-      <Button onClick={handleType}>sign in with {type ? "user name" : "email"}</Button>
+      <Button onClick={handleType}>sign in with {!type ? "user name" : "email"}</Button>
       {type ?
         <TextField sx={{ pb: 2 }} type='text' label="User Name" variant="outlined" value={userName} onChange={userNameInput} />
         :
         <TextField sx={{ pb: 2 }} type='text' label="Email" variant="outlined" value={email} onChange={emailInput} />
       }
       <TextField sx={{ pb: 2 }} type='password' label="Password" variant="outlined" value={password} onChange={passwordInput} />
-      <Button>Sign in</Button>
+      <Button onClick={handleSubmit}>Sign in</Button>
       <Button>Back</Button>
     </Paper>
 
