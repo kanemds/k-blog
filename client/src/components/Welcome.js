@@ -7,15 +7,17 @@ import React from 'react'
 const Welcome = () => {
 
   const user = useSelector(selectCurrentUser)
+  console.log(user)
   const token = useSelector(selectCurrentToken)
 
-  const welcome = user ? `Welcome ${user.userName}` : Welcome
+  const welcome = user ? `Welcome ${user}` : Welcome
   const showToken = `${token.slice(0, 9)}...`
 
 
   return (
     <div>
       {welcome}
+      <br />
       {showToken}
     </div>
 
