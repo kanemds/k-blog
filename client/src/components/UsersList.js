@@ -1,6 +1,5 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import user from '../../../server/models/user'
 import { useGetUsersQuery } from '../redux/users/usersApiSlice'
 
 
@@ -13,6 +12,8 @@ const UsersList = () => {
     isError,
     error
   } = useGetUsersQuery()
+
+  console.log(users)
 
   let contnet
   if (isLoading) {
