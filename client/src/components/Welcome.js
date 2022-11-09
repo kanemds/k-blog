@@ -19,6 +19,8 @@ const Welcome = () => {
       {welcome}
       <br />
       {showToken}
+      <br />
+      <Link to='/userlist'>See All Users</Link>
     </div>
 
   )

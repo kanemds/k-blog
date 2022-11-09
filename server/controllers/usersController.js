@@ -3,7 +3,7 @@ const customError = require('../utility/error')
 
 const getAllUsers = async (req, res, next) => {
   try {
-    const users = Users.find()
+    const users = await Users.find()
     res.status(200).json(users)
   } catch (error) {
     next(error)

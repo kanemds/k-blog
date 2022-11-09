@@ -6,6 +6,7 @@ import Home from './pages/Home'
 import Welcome from './components/Welcome'
 import RequireAuth from './components/RequireAuth'
 import Layout from './components/Layout'
+import UsersList from './components/UsersList'
 
 
 function App() {
@@ -17,9 +18,11 @@ function App() {
           <Route index element={<Home />} />
           <Route path='register' element={<RegisterForm />} />
           <Route path='signin' element={<SignInForm />} />
+
           {/* user only */}
           <Route element={<RequireAuth />}>
             <Route path='welcome' element={<Welcome />} />
+            <Route path='userlist' element={<UsersList />} />
           </Route>
 
         </Route>
